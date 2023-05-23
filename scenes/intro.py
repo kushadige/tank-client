@@ -3,7 +3,7 @@ from threading import Thread
 
 from utils.main import draw_text, font
 
-welcome_msg_1 = "Welcome to Two Dot - Multiplayer"
+welcome_msg_1 = "Welcome to TCP Tank - Multiplayer"
 welcome_msg_2 = "Trying to connect to server..."
 success_msg = "Connection success..."
 failure_msg_1 = "Could not connect to server..."
@@ -45,6 +45,7 @@ class Intro:
                 # login menu screen 3 seconds after success
                 if current_time - process_end_time > 3000:
                     scene.scene_state = "menu"
+                # scene.scene_state = "menu"
             else:
                 draw_text(scene.screen, failure_msg_1, font(20), (255, 0, 0), False, 160)
                 draw_text(scene.screen, failure_msg_2, font(25), (255, 0, 0), False, 220)

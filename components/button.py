@@ -5,12 +5,16 @@ from constants import *
 
 class Button:
     def __init__(self, screen, image, scale_x = 1, scale_y = 1, text = ""):
-        width = image.get_width()
-        height = image.get_height()
+        self.width = image.get_width()
+        self.height = image.get_height()
+        self.scale_x, self.scale_y = scale_x, scale_y
         self.screen = screen
-        self.surface = pygame.transform.scale(image, (int(width * scale_x), int(height * scale_y)))
+        self.surface = pygame.transform.scale(image, (int(self.width * self.scale_x), int(self.height * self.scale_y)))
         self.rect = self.surface.get_rect()
         self.text = text
+
+    def update(self, image):
+        self.surface = pygame.transform.scale(image, (int(self.width * self.scale_x), int(self.height * self.scale_y)))
 
     def draw(self, x = 0, y = 0, font_size = 24):
         if(x == 0 and y == 0):
