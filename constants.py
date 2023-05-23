@@ -14,3 +14,17 @@ success_msg = "Connection success..."
 failure_msg_1 = "Could not connect to server..."
 failure_msg_2 = "(Press ESC to exit)"
 closed_msg = "Connection closed..."
+
+# commands
+LOG     = "LOG"
+REG     = "REG"
+QUIT    = "QUIT"
+STAT    = "STAT"
+ACCT    = "ACCT"
+DELE    = "DELE"
+
+# codes
+INIT    = "100"
+SUCCESS = "200"
+FAILURE = "400"
+CRASH   = "500"

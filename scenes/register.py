@@ -98,7 +98,7 @@ class Register:
                     self.tb_confirm.active = False
                     self.tb_confirm.background = bg_passive
                 if self.register_button.rect.collidepoint(event.pos):
-                    print("register clicked!")
+                    self.client.register(self.username, self.password, self.confirm)
             if event.type == pygame.MOUSEMOTION:
                 if self.register_button.rect.collidepoint(event.pos):
                     self.button_active = True

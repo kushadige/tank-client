@@ -79,7 +79,7 @@ class Login:
                     self.tb_password.active = False
                     self.tb_password.background = bg_passive
                 if self.login_button.rect.collidepoint(event.pos):
-                    print("login clicked!")
+                    self.client.login(self.username, self.password)
             if event.type == pygame.MOUSEMOTION:
                 if self.login_button.rect.collidepoint(event.pos):
                     self.button_active = True
