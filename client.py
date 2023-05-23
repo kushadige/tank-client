@@ -1,5 +1,6 @@
-from socket import AF_INET, SOCK_STREAM, SHUT_RDWR, socket
+from socket import AF_INET, SOCK_STREAM, SHUT_RDWR, socket, error
 from threading import Thread
+import traceback
 
 class Client:
     def __init__(self):
@@ -9,48 +10,61 @@ class Client:
         self.DEST_ADDR = (self.DEST_IP, self.DEST_PORT)
 
         self.client = socket(AF_INET, SOCK_STREAM)
-        self.server_down = False
+        self.connection_status = "waiting"
 
-    def start(self, scene):
-        print("Welcome to Two Dot - Multiplayer... Trying to connect %s:%s" %self.DEST_ADDR)
+    def start(self):
+        print("Welcome to TCP Tank - Multiplayer...")
+        print("Trying to connect %s:%s" %self.DEST_ADDR)
+
         try:
             self.client.connect(self.DEST_ADDR)
-        except:
-            print("Could not connect to server...")
-            scene.connection_status = "failure"
+        except error:
+            traceback.print_exc()
+            self.connection_status = "failure"
             self.client.close()
-            quit()
+            return
+        print("Connection successful... Press ESC to exit")
+        self.connection_status = "success"
 
-        print("Connection was successful... Press ESC to exit")
-        scene.connection_status = "success"
-        Thread(target=self.receive_msg, args=(), daemon=True).start()
-        Thread(target=self.send_msg, args=(), daemon=True).start()
+        # START NETWORK STREAM THREADS
+        Thread(target=self.receive, args=(), daemon=True).start()
+        Thread(target=self.send, args=(), daemon=True).start()
 
-    def receive_msg(self):
-        while True:
-            try:
-                recvd_message = self.client.recv(self.BUF_SIZE).decode()
-                if(recvd_message == "FIN"):
-                    self.server_down = True
-                    print("Connection closed...")
-                    break
-                print(recvd_message)
-            except:
-                break
-    
-    def send_msg(self):
-        while True:
-            try:
-                msg = input()
-                self.client.send(msg.encode())
-            except:
-                self.server_down = True
-                break
-
-    def close_active_sock(self):
+    def stop(self, msg=""):
         try:
             self.client.send("FIN".encode())
             self.client.shutdown(SHUT_RDWR)
             self.client.close()
-        except:
-            pass
+            print(msg)
+        except Exception as e:
+            print(e)
+        self.connection_status = "closed"
+
+    def receive(self):
+        while True:
+            try:
+                response = self.client.recv(self.BUF_SIZE).decode()
+                if(response == "FIN"):
+                    self.stop("Connection closed by server...")
+                    break
+                print(response)
+            except error:
+                self.connection_status = "closed"
+                if self.connection_status == "waiting":
+                    traceback.print_exc()
+                break
+        return
+    
+    def send(self):
+        while True:
+            try:
+                response = input()
+                if(response == "{exit}"):
+                    self.stop("Connection closed by client...")
+                    break
+                self.client.send(response.encode())
+            except error:
+                self.connection_status = "closed"
+                traceback.print_exc()
+                break
+        return
