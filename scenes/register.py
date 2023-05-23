@@ -38,7 +38,7 @@ class Register:
     def draw(self, scene):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.client.close_active_sock()
+                self.client.stop()
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:

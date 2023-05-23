@@ -24,7 +24,7 @@ while True: # Game Loop
     except Exception as e:
         traceback.print_exc()
         print(f"\nERROR: {e}")
-        client.close_active_sock()
+        client.stop()
         pygame.quit()
         sys.exit()
             
