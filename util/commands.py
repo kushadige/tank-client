@@ -1,0 +1,14 @@
+INIT = "INIT" # First server respond.
+EXIT = "EXIT" # Exit Game.
+LOGN = "LOGN" # Login.
+LOGT = "LOGT" # Logout.
+ENTL = "ENTL" # User enters lobby.
+ENTR = "ENTR" # User enters room.
+LVER = "LVER" # User leaves room.
+LVEL = "LVEL" # User leaves lobby.
+CRTR = "CRTR" # Create room.
+SRTG = "SRTG" # Start Game.
+MOVE = "MOVE" # Tank move.
+SHOT = "SHOT" # Tank shot.
+MESG = "MESG" # Message to chat.
+DOWN = "DOWN" # Server closed.
